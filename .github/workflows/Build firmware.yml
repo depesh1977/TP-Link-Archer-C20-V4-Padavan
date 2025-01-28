@@ -2,6 +2,8 @@ name: Build firmware
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Run at 00:00 UTC every day
   push:
     tags:
       - '*'
@@ -63,6 +65,16 @@ jobs:
         cp "padavan-ng/trunk/images/$FW_FILE_NAME" .
         echo "FW_FILE_NAME=$FW_FILE_NAME" >> $GITHUB_ENV
         echo "BUILD_TIMESTAMP=$(date '+%Y.%m.%d_%H.%M.%S')" >> $GITHUB_ENV
+
+    - name: Create Release
+      if: github.event_name != 'pull_request'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release create "release_${BUILD_TIMESTAMP}" \
+          --title "Padavan TP-Link Archer C5 V4 (${BUILD_TIMESTAMP})" \
+          --notes "Automatic build from GitHub Actions" \
+          "$FW_FILE_NAME"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
