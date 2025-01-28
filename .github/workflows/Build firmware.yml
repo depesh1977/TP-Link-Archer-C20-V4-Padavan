@@ -60,9 +60,22 @@ jobs:
 
     - name: Prepare artifacts
       run: |
-        FW_FILE_NAME="$(find padavan-ng/trunk/images -type f -regextype posix-extended -iregex ".*\.(trx|bin)$" \
-                        -printf "%T@\t%f\n" | sort -V | tail -1 | cut -f2)"
-        cp "padavan-ng/trunk/images/$FW_FILE_NAME" .
+        # Find firmware file with more detailed error handling
+        FW_FILE=$(find padavan-ng/trunk/images -type f -name "*.trx" -o -name "*.bin" | head -n 1)
+        if [ -z "$FW_FILE" ]; then
+          echo "Error: No firmware file found in padavan-ng/trunk/images"
+          ls -la padavan-ng/trunk/images
+          exit 1
+        fi
+        
+        FW_FILE_NAME=$(basename "$FW_FILE")
+        echo "Found firmware file: $FW_FILE_NAME"
+        
+        # Copy firmware file with error checking
+        if ! cp "$FW_FILE" ./; then
+          echo "Error: Failed to copy firmware file"
+          exit 1
+        fi
         
         # Create 128KB empty file and recovery firmware
         dd if=/dev/zero of=128kempty.bin bs=128k count=1
