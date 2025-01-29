@@ -91,7 +91,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: release-${{ env.BUILD_TIMESTAMP }}
-        release_name: Padavan TP-Link Archer C5 V4 (${{ env.BUILD_TIMESTAMP }})
+        release_name: Padavan TP-Link Archer C5 V4 SMB (${{ env.BUILD_TIMESTAMP }})
         body: |
           📋 Инструкция прошивки
           🔰 Подготовка:
