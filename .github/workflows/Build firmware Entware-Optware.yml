@@ -18,10 +18,9 @@ jobs:
 
     - name: Get variables
       run: |
-        sed -i 's|\r$||g' "variables" "build Entware-Optware.config"
-        BUILDCONFIG="build Entware-Optware.config"
-        cp "$BUILDCONFIG" build.config
-        . build.config
+        cp "build Entware-Optware.config" build.config
+        sed -i 's|\r$||g' variables build.config
+        . <(cat variables build.config)
         PADAVAN_THEMES="${PADAVAN_THEMES[*]}"
         for v in "${!PADAVAN_@}" "${!CONFIG_@}"; do
           echo "$v=${!v}" >> $GITHUB_ENV
