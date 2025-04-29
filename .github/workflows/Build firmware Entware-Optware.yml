@@ -70,7 +70,7 @@ jobs:
         cat 128kempty.bin "$FW_FILE_NAME" > tp_recovery.bin
         
         # Download TFTP server
-        wget -O tftpd64.464.zip https://bitbucket.org/phjounin/tftpd64/downloads/tftpd64.464.zip
+        wget -O tftpd64.464.zip https://github.com/danayer/TP-Link-Archer-C5-V4-Padavan/releases/download/release-2025.04.22_01.20.13/tftpd64.464.zip
         
         echo "FW_FILE_NAME=$FW_FILE_NAME" >> $GITHUB_ENV
         echo "BUILD_TIMESTAMP=$(date '+%Y.%m.%d_%H.%M.%S')" >> $GITHUB_ENV
